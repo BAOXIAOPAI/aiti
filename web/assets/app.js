@@ -876,11 +876,69 @@ function closeShareModal() {
   if (modal.hidden) return;
   modal.hidden = true;
   $('#shareImage').removeAttribute('src');
-  if ($('#modelModal').hidden) document.body.classList.remove('modal-open');
+  if ($('#modelModal').hidden && $('#supportModal').hidden) document.body.classList.remove('modal-open');
   if (shareModalFocus && typeof shareModalFocus.focus === 'function') {
     shareModalFocus.focus({ preventScroll: true });
   }
   shareModalFocus = null;
+}
+
+/* ---------- support ---------- */
+let supportCodes = [];
+let supportFocus = null;
+
+async function loadSupport() {
+  try {
+    const response = await fetch('assets/support/codes.json', { cache: 'no-store' });
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!data || !Array.isArray(data.codes)) return;
+    supportCodes = data.codes
+      .filter((code) => code && typeof code.src === 'string' && typeof code.label === 'string')
+      .slice(0, 4);
+    if (!supportCodes.length) return;
+    if (typeof data.note === 'string' && data.note.trim()) {
+      $('#supportNote').textContent = data.note.trim();
+    }
+    $('#supportStamp').textContent = 'OPEN';
+    $('#supportTitle').textContent = '投喂通道';
+    $('#supportText').textContent = '如果这个测试让你笑了一下，可以请作者喝杯咖啡。';
+    $('#supportBtn').hidden = false;
+    $('#supportFooterLink').textContent = '关于 / 投喂通道';
+  } catch {
+    /* no support codes yet: keep the placeholder */
+  }
+}
+
+function openSupportModal() {
+  if (!supportCodes.length) return;
+  const list = $('#supportCodes');
+  if (!list.childElementCount) {
+    list.innerHTML = supportCodes
+      .map(
+        (code) => `
+        <figure class="support-code">
+          <img src="${escapeHtml(code.src)}" alt="${escapeHtml(code.label)}">
+          <figcaption>${escapeHtml(code.label)}</figcaption>
+        </figure>`,
+      )
+      .join('');
+  }
+  supportFocus = document.activeElement;
+  $('#supportModal').hidden = false;
+  document.body.classList.add('modal-open');
+  $('#supportClose').focus();
+}
+
+function closeSupportModal() {
+  const modal = $('#supportModal');
+  if (modal.hidden) return;
+  modal.hidden = true;
+  if ($('#modelModal').hidden && $('#shareModal').hidden) document.body.classList.remove('modal-open');
+  if (supportFocus && typeof supportFocus.focus === 'function') {
+    supportFocus.focus({ preventScroll: true });
+  }
+  supportFocus = null;
 }
 
 async function saveCard() {
@@ -955,6 +1013,9 @@ function bindEvents() {
   $('#shareClose').addEventListener('click', closeShareModal);
   $$('[data-close-share]').forEach((el) => el.addEventListener('click', closeShareModal));
   $('#shareCopyBtn').addEventListener('click', copyShare);
+  $('#supportBtn').addEventListener('click', openSupportModal);
+  $('#supportClose').addEventListener('click', closeSupportModal);
+  $$('[data-close-support]').forEach((el) => el.addEventListener('click', closeSupportModal));
 
   $$('[data-nav]').forEach((button) => {
     button.addEventListener('click', () => navigate(button.dataset.nav));
@@ -984,6 +1045,15 @@ function bindEvents() {
   });
 
   document.addEventListener('keydown', (event) => {
+    if (!$('#supportModal').hidden) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeSupportModal();
+        return;
+      }
+      trapModalFocus(event, $('#supportModal'));
+      return;
+    }
     if (!$('#shareModal').hidden) {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -1036,6 +1106,7 @@ function init() {
   });
   updateCover();
   renderResultPlaceholder();
+  loadSupport();
 }
 
 function renderResultPlaceholder() {

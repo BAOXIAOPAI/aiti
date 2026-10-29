@@ -221,10 +221,11 @@
             <p>本测试与 OpenAI、Anthropic、Google、Meta、xAI、深度求索、阿里巴巴、字节跳动、月之暗面、智谱等公司无任何关联。模型名称仅作娱乐性指代，不代表对其产品的评价。「小鲸鱼」为社区同人形象，与厂商无关。</p>
           </section>
         </div>
-        <section class="support-card">
-          <div class="support-head"><span class="eyebrow">SUPPORT</span><span class="stamp">TBD</span></div>
-          <h3>投喂通道 · 筹备中</h3>
-          <p>作者正在给服务器攒电费。等这条通道接通了，这里会出现一个二维码。</p>
+        <section class="support-card" id="supportCard">
+          <div class="support-head"><span class="eyebrow">SUPPORT</span><span class="stamp" id="supportStamp">TBD</span></div>
+          <h3 id="supportTitle">投喂通道 · 筹备中</h3>
+          <p id="supportText">作者正在给服务器攒电费。等这条通道接通了，这里会出现一个二维码。</p>
+          <button class="btn ghost support-open" id="supportBtn" type="button" hidden>查看投喂方式</button>
         </section>
         <div class="report-actions">
           <button class="btn ghost" data-nav="cover">回到封面</button>
@@ -237,7 +238,7 @@
   <footer class="footer" id="footer">
     <span>MPB · 大模型人格基准测试</span>
     <span class="footer-mid">纯属娱乐 · 无科学依据</span>
-    <button class="footer-link" data-nav="about">关于 / 投喂通道筹备中</button>
+    <button class="footer-link" id="supportFooterLink" data-nav="about">关于 / 投喂通道筹备中</button>
   </footer>
 
   <div class="modal" id="modelModal" hidden>
@@ -259,6 +260,17 @@
         <button class="btn primary" id="shareCopyBtn" type="button">复制分享文案</button>
         <button class="btn ghost" type="button" data-close-share>关闭</button>
       </div>
+    </div>
+  </div>
+
+  <div class="modal" id="supportModal" hidden>
+    <div class="modal-backdrop" data-close-support></div>
+    <div class="modal-sheet support-sheet" role="dialog" aria-modal="true" aria-labelledby="supportModalTitle">
+      <button class="modal-close" id="supportClose" aria-label="关闭">×</button>
+      <p class="eyebrow">SUPPORT</p>
+      <h3 class="share-title" id="supportModalTitle">投喂方式</h3>
+      <p class="share-hint" id="supportNote">自愿投喂，不提供任何商品或服务。谢谢你的支持。</p>
+      <div class="support-codes" id="supportCodes"></div>
     </div>
   </div>
 
