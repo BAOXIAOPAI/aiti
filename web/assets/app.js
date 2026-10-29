@@ -904,6 +904,7 @@ async function loadSupport() {
     $('#supportTitle').textContent = '投喂通道';
     $('#supportText').textContent = '如果这个测试让你笑了一下，可以请作者喝杯咖啡。';
     $('#supportBtn').hidden = false;
+    $('#resultSupport').hidden = false;
     $('#supportFooterLink').textContent = '关于 / 投喂通道';
   } catch {
     /* no support codes yet: keep the placeholder */
@@ -1014,6 +1015,7 @@ function bindEvents() {
   $$('[data-close-share]').forEach((el) => el.addEventListener('click', closeShareModal));
   $('#shareCopyBtn').addEventListener('click', copyShare);
   $('#supportBtn').addEventListener('click', openSupportModal);
+  $('#resultSupportBtn').addEventListener('click', openSupportModal);
   $('#supportClose').addEventListener('click', closeSupportModal);
   $$('[data-close-support]').forEach((el) => el.addEventListener('click', closeSupportModal));
 
