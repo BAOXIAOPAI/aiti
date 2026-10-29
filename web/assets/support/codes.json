@@ -1,3 +1,6 @@
 {
-  "codes": []
+  "note": "自愿投喂，不提供任何商品或服务。谢谢你的支持。",
+  "codes": [
+    { "label": "微信收款码", "src": "assets/support/wechat.png" }
+  ]
 }
