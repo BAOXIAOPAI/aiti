@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F2F1EC">
+  <title>你，是哪个大模型？· 大模型人格基准测试</title>
+  <meta name="description" content="16 道生活观察题，测出你的模型人格。六维基准、模型报告单、12 个模型图鉴，纯属娱乐。">
+  <meta property="og:title" content="你，是哪个大模型？">
+  <meta property="og:description" content="16 道生活观察题，测出你的模型人格。六维基准、模型报告单、12 个模型图鉴。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-screen="cover">
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button class="brand" data-nav="cover" aria-label="回到封面">
+      <span class="brand-mark">MPB</span>
+      <span class="brand-name">大模型人格基准</span>
+    </button>
+    <nav class="topnav" aria-label="站点导航">
+      <button data-nav="gallery">图鉴</button>
+      <button data-nav="about">关于</button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- 封面 -->
+    <section class="screen is-active" id="screen-cover" data-screen="cover" aria-label="封面">
+      <div class="cover">
+        <div class="cover-copy">
+          <p class="eyebrow"><span class="dot"></span>LLM PERSONALITY BENCHMARK · REV 2026.10</p>
+          <h1>你，是哪个<br><mark>大模型</mark>？</h1>
+          <p class="lede">16 道生活观察题。实验室会为你跑一轮完整评测，出一张属于自己的模型报告单：人格类型、六维基准、参数规格，以及和你最兼容的那一位。</p>
+          <div class="cover-actions">
+            <button class="btn primary" id="startBtn">开始评测 <span class="arrow">→</span></button>
+            <button class="btn text is-hidden" id="continueBtn">查看上次报告</button>
+          </div>
+          <ul class="meta-row">
+            <li><span>16</span> 道题</li>
+            <li><span>~2</span> 分钟</li>
+            <li><span>12</span> 个模型人格</li>
+            <li><span>0</span> 条数据上传</li>
+          </ul>
+          <p class="fineprint">纯属娱乐，与各模型厂商无关。结果只保存在你的浏览器里。</p>
+        </div>
+
+        <div class="cover-art" aria-hidden="true">
+          <div class="sample-card">
+            <div class="sample-head"><span>SAMPLE REPORT</span><span>样例</span></div>
+            <div class="sample-body">
+              <span class="glyph-chip" data-glyph="gpt" style="--chip:#E8734A"></span>
+              <div>
+                <p class="sample-vendor">OpenAI · 通用模型</p>
+                <h2>GPT</h2>
+                <p class="sample-tag">热心万事通</p>
+              </div>
+            </div>
+            <div class="sample-bars">
+              <div class="mini-bar"><span>逻辑</span><i><b style="--v:40%"></b></i><em>40</em></div>
+              <div class="mini-bar"><span>社交</span><i><b style="--v:68%"></b></i><em>68</em></div>
+              <div class="mini-bar"><span>共情</span><i><b style="--v:62%"></b></i><em>62</em></div>
+              <div class="mini-bar"><span>稳定</span><i><b style="--v:58%"></b></i><em>58</em></div>
+            </div>
+            <div class="sample-foot"><span>MATCH 96.8%</span><span>NO. 001 / 012</span></div>
+            <span class="stamp sample-stamp">SAMPLE</span>
+          </div>
+          <p class="art-caption">FIG. 01 — 一份样例报告单</p>
+        </div>
+      </div>
+      <div class="index-strip" aria-hidden="true">MODEL INDEX — GPT / QWEN / KIMI / GLM / CLAUDE / DEEPSEEK / 小鲸鱼 / 豆包 / GEMINI / GROK / LLAMA / SORA</div>
+    </section>
+
+    <!-- 答题 -->
+    <section class="screen" id="screen-quiz" data-screen="quiz" aria-label="答题">
+      <div class="quiz">
+        <div class="quiz-top">
+          <button class="icon-btn" id="backBtn" aria-label="上一题">←</button>
+          <div class="quiz-meta">
+            <span id="qCount">QUESTION 01 / 16</span>
+            <span class="quiz-tip">点选项自动下一题</span>
+          </div>
+        </div>
+        <div class="progress" id="progress" role="progressbar" aria-label="答题进度" aria-valuemin="0" aria-valuemax="16" aria-valuenow="0"></div>
+        <div class="q-body">
+          <p class="q-label" id="qLabel">SCENARIO 01</p>
+          <h2 class="q-title" id="qTitle" tabindex="-1"></h2>
+          <div class="opts" id="opts"></div>
+        </div>
+        <div class="quiz-foot"><span>MPB / 生活场景观察</span><span id="quizPct">0%</span></div>
+      </div>
+    </section>
+
+    <!-- 评测中 -->
+    <section class="screen" id="screen-analyzing" data-screen="analyzing" aria-label="评测中">
+      <div class="analyzing">
+        <span class="stamp analyzing-stamp">RUNNING</span>
+        <p class="eyebrow"><span class="dot"></span>RUNNING BENCHMARK</p>
+        <h2>正在评测你的<br>模型人格</h2>
+        <div class="log" id="analyzingLog" aria-live="polite"></div>
+        <div class="progress thin"><i id="analyzingBar"></i></div>
+        <p class="fineprint">六维基准 · 12 组模型人格比对</p>
+      </div>
+    </section>
+
+    <!-- 结果 -->
+    <section class="screen" id="screen-result" data-screen="result" aria-label="评测报告">
+      <article class="report" id="report">
+        <header class="report-head">
+          <div>
+            <p class="eyebrow">BENCHMARK COMPLETE</p>
+            <h2 class="report-title">模型人格报告单</h2>
+          </div>
+          <div class="report-meta"><span id="serial">SUBJ-0000</span><span id="reportDate">2026.10.29</span></div>
+        </header>
+
+        <div class="report-hero">
+          <div class="hero-top">
+            <span class="glyph-chip xl" id="resGlyph"></span>
+            <span class="stamp match-stamp"><span>MATCH</span><strong id="resMatch">96%</strong></span>
+          </div>
+          <p class="res-vendor" id="resVendor"></p>
+          <h1 class="res-name" id="resName"></h1>
+          <p class="res-tag" id="resTag"></p>
+          <p class="res-desc" id="resDesc"></p>
+        </div>
+
+        <section class="rep-section">
+          <h3 class="sec-title"><span>01</span>六维基准 <em>BENCHMARK SCORES</em></h3>
+          <div class="trait-bars" id="traitBars"></div>
+        </section>
+
+        <section class="rep-section">
+          <h3 class="sec-title"><span>02</span>模型规格 <em>SPECIFICATIONS</em></h3>
+          <dl class="spec-grid" id="specGrid"></dl>
+          <div class="deploy"><span>部署建议 / DEPLOYMENT</span><p id="resDeploy"></p></div>
+        </section>
+
+        <section class="rep-section two-col">
+          <div>
+            <h3 class="sec-title"><span>03</span>擅长任务 <em>STRENGTHS</em></h3>
+            <ul class="task-list" id="resStrengths"></ul>
+          </div>
+          <div>
+            <h3 class="sec-title"><span>04</span>不擅长 <em>LIMITATIONS</em></h3>
+            <ul class="task-list limits" id="resLimits"></ul>
+          </div>
+        </section>
+
+        <section class="rep-section">
+          <h3 class="sec-title"><span>05</span>兼容性 <em>COMPATIBILITY</em></h3>
+          <div class="compat-grid">
+            <button class="compat-card" id="compatCard"></button>
+            <button class="compat-card clash" id="clashCard"></button>
+          </div>
+        </section>
+
+        <section class="rep-section">
+          <h3 class="sec-title"><span>06</span>适配度榜单 <em>LEADERBOARD</em></h3>
+          <ol class="leaderboard" id="leaderboard"></ol>
+          <p class="fineprint">榜单展示前 5 名；其余模型人格可在图鉴中解锁。</p>
+        </section>
+
+        <div class="report-actions">
+          <button class="btn primary" id="saveCardBtn">保存模型卡</button>
+          <button class="btn ghost" id="copyBtn">复制分享文案</button>
+          <button class="btn ghost" id="retakeBtn">再测一次</button>
+          <button class="btn text" data-nav="gallery">打开图鉴 →</button>
+        </div>
+        <footer class="report-foot">
+          <span>MPB — 大模型人格基准测试</span>
+          <span>娱乐向报告 · 不具备任何科学依据</span>
+        </footer>
+      </article>
+    </section>
+
+    <!-- 图鉴 -->
+    <section class="screen" id="screen-gallery" data-screen="gallery" aria-label="模型图鉴">
+      <div class="gallery">
+        <header class="page-head">
+          <p class="eyebrow"><span class="dot"></span>MODEL INDEX</p>
+          <h2>模型图鉴</h2>
+          <p class="lede">每测出一个模型，这里就点亮一张卡。共有 12 个模型人格。</p>
+          <div class="gallery-progress">
+            <div class="gallery-progress-top"><span id="galleryCount">0 / 12 已观测</span><span class="mono-muted">LOCAL ONLY</span></div>
+            <div class="progress thin"><i id="galleryBar"></i></div>
+          </div>
+        </header>
+        <div class="gallery-grid" id="galleryGrid"></div>
+        <div class="gallery-foot">
+          <button class="btn text danger" id="resetBtn">清除本地观测记录</button>
+          <span class="fineprint">记录只保存在本机浏览器</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="screen" id="screen-about" data-screen="about" aria-label="关于">
+      <div class="about">
+        <header class="page-head">
+          <p class="eyebrow"><span class="dot"></span>ABOUT THE BENCHMARK</p>
+          <h2>关于这个评测</h2>
+        </header>
+        <div class="about-grid">
+          <section>
+            <h3>这是什么</h3>
+            <p>一份娱乐向的人格类比：把人的日常习惯，映射到大模型的气质上。它不是心理测验，也不代表任何模型的真实能力。</p>
+          </section>
+          <section>
+            <h3>怎么算的</h3>
+            <p>16 道题对应六项基准——逻辑、共情、社交、脑洞、稳定、叛逆。系统将你的六维分布与 12 个模型人格逐一比对，取最接近的一位，并给出前五名适配度榜单。</p>
+          </section>
+          <section>
+            <h3>隐私</h3>
+            <p>没有账号，没有上传。你的答案、结果和解锁记录只保存在浏览器本地，清除浏览器数据即会消失。</p>
+          </section>
+          <section>
+            <h3>声明</h3>
+            <p>本测试与 OpenAI、Anthropic、Google、Meta、xAI、深度求索、阿里巴巴、字节跳动、月之暗面、智谱等公司无任何关联。模型名称仅作娱乐性指代，不代表对其产品的评价。「小鲸鱼」为社区同人形象，与厂商无关。</p>
+          </section>
+        </div>
+        <section class="support-card">
+          <div class="support-head"><span class="eyebrow">SUPPORT</span><span class="stamp">TBD</span></div>
+          <h3>投喂通道 · 筹备中</h3>
+          <p>作者正在给服务器攒电费。等这条通道接通了，这里会出现一个二维码。</p>
+        </section>
+        <div class="report-actions">
+          <button class="btn ghost" data-nav="cover">回到封面</button>
+          <button class="btn ghost" data-nav="gallery">打开图鉴</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <span>MPB · 大模型人格基准测试</span>
+    <span class="footer-mid">纯属娱乐 · 无科学依据</span>
+    <button class="footer-link" data-nav="about">关于 / 投喂通道筹备中</button>
+  </footer>
+
+  <div class="modal" id="modelModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="modalName">
+      <button class="modal-close" id="modalClose" aria-label="关闭">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="shareModal" hidden>
+    <div class="modal-backdrop" data-close-share></div>
+    <div class="modal-sheet share-sheet" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+      <button class="modal-close" id="shareClose" aria-label="关闭">×</button>
+      <h3 class="share-title" id="shareTitle">模型卡已生成</h3>
+      <p class="share-hint">在微信里长按图片保存，再发给朋友或发到朋友圈。二维码已经印在卡片右下角。</p>
+      <img class="share-image" id="shareImage" alt="我的大模型人格模型卡">
+      <div class="modal-actions">
+        <button class="btn primary" id="shareCopyBtn" type="button">复制分享文案</button>
+        <button class="btn ghost" type="button" data-close-share>关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>
